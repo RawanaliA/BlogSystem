@@ -18,7 +18,7 @@ public class BlogService {
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
 
-    public List<Blog> getBlog(Integer id) {
+    public List<Blog> getallBlogs(Integer id) {
 //
         return blogRepository.findAll();
     }
