@@ -18,13 +18,12 @@ public class BlogService {
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
 
-    public List<Blog> getallBlogs(Integer id) {
-//
-        return blogRepository.findAll();
+    public List<Blog> getallBlogs(Integer userId) {
+        return blogRepository.findBlogsByUserId(userId);
     }
     public void addBlog(Integer userid,Blog blog) {
-
-        blog.setId(userid);
+        MyUser myUser=userRepository.findMyUserById(userid);
+        blog.setUser(myUser);
         blogRepository.save(blog);
     }
     public void updateBlog(Integer userid,Blog blog,Integer blogId) {
@@ -40,19 +39,23 @@ public class BlogService {
         oldBlog.setTitle(blog.getTitle());
         blogRepository.save(oldBlog);
     }
-    public void deleteBlog(Integer userid,Integer todoId) {
-        Blog  blog = blogRepository.findBlogsById(todoId);
+    public void deleteBlog(Integer userid,Integer blogId) {
+        Blog  blog = blogRepository.findBlogsById(blogId);
         if (blog.getId() == null) {
 
             throw new ApiExeption("Blog Not found");
         }
         blogRepository.delete(blog);
 
+        if(blog.getUser().getId()!=userid) {
+            throw new ApiExeption("unAuthorized");
+        }
     }
     public void assighnUserToBlog(Integer userId,Integer blogid){
         MyUser myUser=userRepository.findMyUserById(userId);
         Blog blog =blogRepository.findBlogsById(blogid);
-        if(myUser==null||blog==null){
+        if(myUser==null||blog==null)
+        {
             throw new ApiExeption("User Or Blog are Null");
         }
         blog.setUser(myUser);

@@ -8,11 +8,11 @@ import java.util.List;
 
 @Repository
 public interface BlogRepository extends JpaRepository<Blog,Integer> {
-   Blog findBlogsById(Integer id);
-   Blog getBlogsById(Integer id);
+  Blog findBlogsById(Integer id);
+//  Blog getBlogsByUserId(Integer id);
 
     Blog getBlogByTitle(String title);
 
-    List<Blog> getBlogsByUserId(Integer id);
+    List<Blog> findBlogsByUserId(Integer id);
 
 }
